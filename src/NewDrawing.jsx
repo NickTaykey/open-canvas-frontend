@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Canvas from './Canvas';
+import { saveDrawing } from './helpers';
 
 class NewDrawing extends Component {
 	state = { pixels: [] };
@@ -11,9 +12,14 @@ class NewDrawing extends Component {
 		}));
 	};
 
-	handlePostClick = () => {
+	handlePostClick = async () => {
 		const JSONdata = JSON.stringify(this.state.pixels);
-		console.log(JSONdata);
+		try {
+			let drawing = await saveDrawing(JSONdata);
+			console.log(drawing);
+		} catch (e) {
+			console.log(e);
+		}
 	};
 
 	render () {
