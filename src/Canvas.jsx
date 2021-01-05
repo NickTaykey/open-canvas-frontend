@@ -7,7 +7,7 @@ class Canvas extends Component {
 		const { width, pixelsLen } = this.props;
 		this.pixelsOffset = width / pixelsLen;
 		this.canvasRef = new React.createRef();
-		this.state = { drawing: false };
+		this.state = { drawing: false, pixels: [] };
 		this.canvas = null;
 		this.ctx = null;
 	}
@@ -38,12 +38,10 @@ class Canvas extends Component {
 
 	fillPixel (xIndex, yIndex) {
 		const { ctx, pixelsOffset } = this;
-		ctx.fillRect(
-			xIndex * pixelsOffset,
-			yIndex * pixelsOffset,
-			pixelsOffset,
-			pixelsOffset
-		);
+		let x = xIndex * pixelsOffset;
+		let y = yIndex * pixelsOffset;
+		ctx.fillRect(x, y, pixelsOffset, pixelsOffset);
+		this.props.addPixel([ x, y ]);
 	}
 
 	drawGrid () {
