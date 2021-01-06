@@ -4,8 +4,7 @@ import './Canvas.css';
 class Canvas extends Component {
 	constructor (props) {
 		super(props);
-		const { width, pixelsLen } = this.props;
-		this.pixelsOffset = width / pixelsLen;
+		this.pixelsOffset = props.width / props.pixelsLen;
 		this.canvasRef = new React.createRef();
 		this.state = { drawing: false, pixels: [] };
 		this.canvas = null;
@@ -15,8 +14,12 @@ class Canvas extends Component {
 	componentDidMount () {
 		this.canvas = this.canvasRef.current;
 		this.ctx = this.canvas.getContext('2d');
-		this.ctx.fillStyle = 'red';
+		this.ctx.fillStyle = this.props.fillStyle;
 		this.drawGrid();
+	}
+
+	componentDidUpdate () {
+		this.ctx.fillStyle = this.props.fillStyle;
 	}
 
 	draw = ({ nativeEvent: e }) => {
