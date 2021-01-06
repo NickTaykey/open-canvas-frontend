@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Canvas from './Canvas';
 import { saveDrawing } from './helpers';
 import Picker from './Picker';
+import ErrorHandler from './ErrorHandler';
 import './NewDrawing.css';
 
 class NewDrawing extends Component {
@@ -11,7 +12,8 @@ class NewDrawing extends Component {
 
 	state = {
 		currentColor : this.props.color,
-		pixels       : []
+		pixels       : [],
+		error        : null
 	};
 
 	addPixel = p => {
@@ -63,40 +65,45 @@ class NewDrawing extends Component {
 			await saveDrawing(JSONdata);
 			this.props.history.push('/drawings');
 		} catch (e) {
-			console.log(e);
+			this.setState({
+				error : { status: e.status, message: e.message }
+			});
 		}
 	};
 
 	render () {
 		return (
 			<div className="NewDrawing">
-				<div className="row">
-					<section className="col-lg-3 col-12">
-						<div className="Picker-container">
-							<h2>Open canvas</h2>
-							<Picker
-								currentColor={this.state.currentColor}
-								onChangeColor={this.changeColor}
+				{this.state.error && <ErrorHandler {...this.state.error} />}
+				{!this.state.error && (
+					<div className="row">
+						<section className="col-lg-3 col-12">
+							<div className="Picker-container">
+								<h2>Open canvas</h2>
+								<Picker
+									currentColor={this.state.currentColor}
+									onChangeColor={this.changeColor}
+								/>
+								<button
+									className="btn btn-primary"
+									id="post-btn"
+									type="button"
+									onClick={this.handlePostClick}>
+									POST
+								</button>
+							</div>
+						</section>
+						<section className="col-lg-9 col-12">
+							<Canvas
+								width={600}
+								height={600}
+								pixelsLen={30}
+								fillStyle={this.state.currentColor}
+								addPixel={this.addPixel}
 							/>
-							<button
-								className="btn btn-primary"
-								id="post-btn"
-								type="button"
-								onClick={this.handlePostClick}>
-								POST
-							</button>
-						</div>
-					</section>
-					<section className="col-lg-9 col-12">
-						<Canvas
-							width={600}
-							height={600}
-							pixelsLen={30}
-							fillStyle={this.state.currentColor}
-							addPixel={this.addPixel}
-						/>
-					</section>
-				</div>
+						</section>
+					</div>
+				)}
 			</div>
 		);
 	}

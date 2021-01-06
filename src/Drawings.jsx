@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { getDrawings } from './helpers';
 import ShowCanvas from './ShowCanvas';
+import ErrorHandler from './ErrorHandler';
 
 class Drawings extends Component {
-	state = { drawings: [] };
+	state = { drawings: [], error: null };
 
 	async componentDidMount () {
 		try {
@@ -14,7 +15,9 @@ class Drawings extends Component {
 			}));
 			this.setState({ drawings });
 		} catch (e) {
-			console.log(e);
+			this.setState({
+				error : { status: e.status, message: e.message }
+			});
 		}
 	}
 
@@ -25,10 +28,15 @@ class Drawings extends Component {
 
 		return (
 			<div className="drawings">
-				<h1 className="mt-3 mb-5 text-center">
-					All the drawings will be displayed here
-				</h1>
-				<div className="row">{canvases}</div>
+				{this.state.error && <ErrorHandler {...this.state.error} />}
+				{!this.state.error && (
+					<section>
+						<h1 className="mt-3 mb-5 text-center">
+							All the drawings will be displayed here
+						</h1>
+						<div className="row">{canvases}</div>
+					</section>
+				)}
 			</div>
 		);
 	}
