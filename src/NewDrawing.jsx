@@ -4,36 +4,56 @@ import { saveDrawing } from './helpers';
 import Picker from './Picker';
 
 class NewDrawing extends Component {
+	static defaultProps = {
+		color : '#f7981b'
+	};
+
 	state = {
-		pixels       : [ { color: 'green', points: [] } ],
-		currentColor : 'green'
+		currentColor : this.props.color,
+		pixels       : []
 	};
 
 	addPixel = p => {
 		this.setState(s => {
 			if (s.pixels.length > 0) {
 				const idx = s.pixels.length - 1;
-				const newPixels = [
-					...s.pixels.slice(0, idx),
-					{
-						...s.pixels[idx],
-						points : [ ...s.pixels[idx].points, p ]
-					}
-				];
-				return { ...s, pixels: newPixels };
+				const lastPixels = s.pixels[idx];
+				if (lastPixels.color === s.currentColor) {
+					const newPixels = [
+						...s.pixels.slice(0, idx),
+						{
+							...lastPixels,
+							points : [ ...lastPixels.points, p ]
+						}
+					];
+					return { ...s, pixels: newPixels };
+				} else {
+					return {
+						pixels : [
+							...s.pixels,
+							{
+								color  : s.currentColor,
+								points : []
+							}
+						]
+					};
+				}
 			} else {
-				return { ...s, pixels: [ { points: [ p ] } ] };
+				return {
+					...s,
+					pixels : [
+						{
+							color  : s.currentColor,
+							points : [ p ]
+						}
+					]
+				};
 			}
 		});
 	};
 
 	changeColor = ({ hex }) => {
-		this.setState(s => {
-			if (hex !== s.currentColor) {
-				const newPixels = [ ...s.pixels, { color: hex, points: [] } ];
-				return { currentColor: hex, pixels: newPixels };
-			}
-		});
+		this.setState({ currentColor: hex });
 	};
 
 	handlePostClick = async () => {
