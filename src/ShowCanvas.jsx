@@ -57,11 +57,13 @@ class ShowCanvas extends Component {
 
 	render () {
 		return (
-			<canvas
-				ref={this.canvasRef}
-				width={this.props.width}
-				height={this.props.height}
-			/>
+			<div className="col-12 col-lg-2">
+				<canvas
+					ref={this.canvasRef}
+					width={this.props.width}
+					height={this.props.height}
+				/>
+			</div>
 		);
 	}
 }

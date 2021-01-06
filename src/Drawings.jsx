@@ -25,8 +25,10 @@ class Drawings extends Component {
 
 		return (
 			<div className="drawings">
-				<h1>All the drawings will be displayed here</h1>
-				{canvases}
+				<h1 className="mt-3 mb-5 text-center">
+					All the drawings will be displayed here
+				</h1>
+				<div className="row">{canvases}</div>
 			</div>
 		);
 	}
