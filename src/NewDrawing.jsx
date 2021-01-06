@@ -60,8 +60,8 @@ class NewDrawing extends Component {
 	handlePostClick = async () => {
 		const JSONdata = JSON.stringify(this.state.pixels);
 		try {
-			let drawing = await saveDrawing(JSONdata);
-			console.log(drawing);
+			await saveDrawing(JSONdata);
+			this.props.history.push('/drawings');
 		} catch (e) {
 			console.log(e);
 		}
