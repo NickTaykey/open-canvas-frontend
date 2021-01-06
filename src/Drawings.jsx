@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
+import { getDrawings } from './helpers';
 
 class Drawings extends Component {
+	async componentDidMount () {
+		try {
+			let data = await getDrawings();
+			console.log(data);
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
 	render () {
 		return (
 			<div className="drawings">
