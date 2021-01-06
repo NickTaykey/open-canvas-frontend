@@ -60,7 +60,7 @@ class Canvas extends Component {
 			ctx.lineTo(height, y);
 		}
 		ctx.strokeStyle = 'light-grey';
-		ctx.lineWidth = 0.75;
+		ctx.lineWidth = 0.3;
 		ctx.stroke();
 	}
 
@@ -69,17 +69,19 @@ class Canvas extends Component {
 
 	render () {
 		return (
-			<canvas
-				ref={this.canvasRef}
-				width={this.props.width}
-				height={this.props.height}
-				onMouseDown={this.startDrawing}
-				onMouseUp={this.stopDrawing}
-				onTouchStart={this.startDrawing}
-				onTouchEnd={this.stopDrawing}
-				onMouseMove={this.draw}
-				onTouchMove={this.draw}
-			/>
+			<div className="Canvas">
+				<canvas
+					ref={this.canvasRef}
+					width={this.props.width}
+					height={this.props.height}
+					onMouseDown={this.startDrawing}
+					onMouseUp={this.stopDrawing}
+					onTouchStart={this.startDrawing}
+					onTouchEnd={this.stopDrawing}
+					onMouseMove={this.draw}
+					onTouchMove={this.draw}
+				/>
+			</div>
 		);
 	}
 }

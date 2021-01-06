@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Canvas from './Canvas';
 import { saveDrawing } from './helpers';
 import Picker from './Picker';
+import './NewDrawing.css';
 
 class NewDrawing extends Component {
 	static defaultProps = {
@@ -68,23 +69,34 @@ class NewDrawing extends Component {
 
 	render () {
 		return (
-			<div>
-				<h1>Open canvas</h1>
-				<Picker
-					currentColor={this.state.currentColor}
-					onChangeColor={this.changeColor}
-				/>
-				<Canvas
-					width={600}
-					height={600}
-					pixelsLen={30}
-					fillStyle={this.state.currentColor}
-					addPixel={this.addPixel}
-				/>
-				<br />
-				<button type="button" onClick={this.handlePostClick}>
-					POST
-				</button>
+			<div className="NewDrawing">
+				<div className="row">
+					<section className="col-lg-3 col-12">
+						<div className="Picker-container">
+							<h2>Open canvas</h2>
+							<Picker
+								currentColor={this.state.currentColor}
+								onChangeColor={this.changeColor}
+							/>
+							<button
+								className="btn btn-primary"
+								id="post-btn"
+								type="button"
+								onClick={this.handlePostClick}>
+								POST
+							</button>
+						</div>
+					</section>
+					<section className="col-lg-9 col-12">
+						<Canvas
+							width={600}
+							height={600}
+							pixelsLen={30}
+							fillStyle={this.state.currentColor}
+							addPixel={this.addPixel}
+						/>
+					</section>
+				</div>
 			</div>
 		);
 	}
