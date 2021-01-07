@@ -1,6 +1,6 @@
 # open-canvas-frontend
 React UI for an open canvas app, all the users can draw something WO auth
-# Routes
+# routes
 - /drawings -> checkout all the posted drawings
 - /drawings/new -> draw something new
 
