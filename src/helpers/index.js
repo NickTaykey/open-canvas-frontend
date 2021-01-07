@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8888/drawings';
+const API_URL = 'https://open-canvas-backend.herokuapp.com/drawings';
 
 function saveDrawing (JSONdata) {
 	return new Promise(async (resolve, reject) => {
