@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { getDrawings } from './helpers';
-import ShowCanvas from './ShowCanvas';
-import ErrorHandler from './ErrorHandler';
+import { getDrawings } from '../helpers';
+import ShowCanvas from '../components/Drawing';
+import ErrorHandler from '../components/ErrorHandler';
 
 class Drawings extends Component {
 	state = { drawings: [], error: null };
@@ -9,27 +9,25 @@ class Drawings extends Component {
 	async componentDidMount () {
 		try {
 			let data = await getDrawings();
-			const drawings = data.map(({ _id, pixels }) => ({
+			let drawings = data.map(({ _id, pixels }) => ({
 				pixels : JSON.parse(pixels),
 				_id
 			}));
 			this.setState({ drawings });
-		} catch (e) {
-			this.setState({
-				error : { status: e.status, message: e.message }
-			});
+		} catch ({ status, message }) {
+			this.setState({ error: { status, message } });
 		}
 	}
 
 	render () {
-		const canvases = this.state.drawings.map(({ _id, pixels }) => (
+		const { drawings, error } = this.state;
+		const canvases = drawings.map(({ _id, pixels }) => (
 			<ShowCanvas key={_id} pixels={pixels} />
 		));
-
 		return (
-			<div className="drawings">
-				{this.state.error && <ErrorHandler {...this.state.error} />}
-				{!this.state.error && (
+			<div>
+				{error && <ErrorHandler {...error} />}
+				{!error && (
 					<section>
 						<h1 className="mt-3 mb-5 text-center">
 							All the drawings will be displayed here

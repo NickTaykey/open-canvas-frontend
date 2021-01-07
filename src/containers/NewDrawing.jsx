@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
-import Canvas from './Canvas';
-import { saveDrawing } from './helpers';
-import Picker from './Picker';
-import ErrorHandler from './ErrorHandler';
-import './NewDrawing.css';
+import { saveDrawing } from '../helpers';
+import ErrorHandler from '../components/ErrorHandler';
+import Canvas from '../components/Canvas';
+import Picker from '../components/Picker';
+import '../styles/NewDrawing.css';
 
 class NewDrawing extends Component {
 	static defaultProps = {
-		color : '#f7981b'
+		color        : '#000',
+		canvasWidth  : 600,
+		canvasHeight : 600,
+		canvasPxLen  : 30
 	};
 
 	state = {
@@ -19,10 +22,10 @@ class NewDrawing extends Component {
 	addPixel = p => {
 		this.setState(s => {
 			if (s.pixels.length > 0) {
-				const idx = s.pixels.length - 1;
-				const lastPixels = s.pixels[idx];
+				let idx = s.pixels.length - 1;
+				let lastPixels = s.pixels[idx];
 				if (lastPixels.color === s.currentColor) {
-					const newPixels = [
+					let newPixels = [
 						...s.pixels.slice(0, idx),
 						{
 							...lastPixels,
@@ -60,47 +63,49 @@ class NewDrawing extends Component {
 	};
 
 	handlePostClick = async () => {
-		const JSONdata = JSON.stringify(this.state.pixels);
 		try {
+			let JSONdata = JSON.stringify(this.state.pixels);
 			await saveDrawing(JSONdata);
 			this.props.history.push('/drawings');
-		} catch (e) {
-			this.setState({
-				error : { status: e.status, message: e.message }
-			});
+		} catch ({ status, message }) {
+			this.setState({ error: { status, message } });
 		}
 	};
 
 	render () {
+		const { canvasWidth, canvasHeight, canvasPxLen } = this.props;
+		const { currentColor, error } = this.state;
 		return (
 			<div className="NewDrawing">
-				{this.state.error && <ErrorHandler {...this.state.error} />}
-				{!this.state.error && (
+				{error && <ErrorHandler {...error} />}
+				{!error && (
 					<div className="row">
-						<section className="col-lg-3 col-12">
+						<section className="col-lg-3">
 							<div className="Picker-container">
-								<h2>Open canvas</h2>
+								<h2 className="text-center">New Drawing!</h2>
 								<Picker
-									currentColor={this.state.currentColor}
 									onChangeColor={this.changeColor}
+									currentColor={currentColor}
 								/>
 								<button
-									className="btn btn-primary"
+									className="btn btn-primary btn-block"
+									onClick={this.handlePostClick}
 									id="post-btn"
-									type="button"
-									onClick={this.handlePostClick}>
+									type="button">
 									POST
 								</button>
 							</div>
 						</section>
-						<section className="col-lg-9 col-12">
-							<Canvas
-								width={600}
-								height={600}
-								pixelsLen={30}
-								fillStyle={this.state.currentColor}
-								addPixel={this.addPixel}
-							/>
+						<section className="col-lg-9">
+							<div className="Canvas-container">
+								<Canvas
+									width={canvasWidth}
+									height={canvasHeight}
+									pixelsLen={canvasPxLen}
+									fillStyle={currentColor}
+									addPixel={this.addPixel}
+								/>
+							</div>
 						</section>
 					</div>
 				)}

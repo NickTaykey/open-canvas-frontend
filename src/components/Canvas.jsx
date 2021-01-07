@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './Canvas.css';
+import '../styles/Canvas.css';
 
 class Canvas extends Component {
 	constructor (props) {
@@ -7,13 +7,11 @@ class Canvas extends Component {
 		this.pixelsOffset = props.width / props.pixelsLen;
 		this.canvasRef = new React.createRef();
 		this.state = { drawing: false, pixels: [] };
-		this.canvas = null;
 		this.ctx = null;
 	}
 
 	componentDidMount () {
-		this.canvas = this.canvasRef.current;
-		this.ctx = this.canvas.getContext('2d');
+		this.ctx = this.canvasRef.current.getContext('2d');
 		this.ctx.fillStyle = this.props.fillStyle;
 		this.drawGrid();
 	}
@@ -24,17 +22,13 @@ class Canvas extends Component {
 
 	draw = ({ nativeEvent: e }) => {
 		if (this.state.drawing) {
-			const { canvas, pixelsOffset } = this;
 			let offsetX, offsetY;
-			if (e.type === 'mousemove' && e.which === 1) {
+			if (e.which === 1) {
 				offsetX = e.offsetX;
 				offsetY = e.offsetY;
-			} else if (e.type === 'touchmove') {
-				offsetX = e.touches[0].pageX - canvas.offsetLeft;
-				offsetY = e.touches[0].pageY - canvas.offsetTop;
 			}
-			let xIndex = Math.floor(offsetX / pixelsOffset);
-			let yIndex = Math.floor(offsetY / pixelsOffset);
+			let xIndex = Math.floor(offsetX / this.pixelsOffset);
+			let yIndex = Math.floor(offsetY / this.pixelsOffset);
 			this.fillPixel(xIndex, yIndex);
 		}
 	};
@@ -69,19 +63,15 @@ class Canvas extends Component {
 
 	render () {
 		return (
-			<div className="Canvas">
-				<canvas
-					ref={this.canvasRef}
-					width={this.props.width}
-					height={this.props.height}
-					onMouseDown={this.startDrawing}
-					onMouseUp={this.stopDrawing}
-					onTouchStart={this.startDrawing}
-					onTouchEnd={this.stopDrawing}
-					onMouseMove={this.draw}
-					onTouchMove={this.draw}
-				/>
-			</div>
+			<canvas
+				className="border border-2 border-dark"
+				ref={this.canvasRef}
+				width={this.props.width}
+				height={this.props.height}
+				onMouseDown={this.startDrawing}
+				onMouseUp={this.stopDrawing}
+				onMouseMove={this.draw}
+			/>
 		);
 	}
 }

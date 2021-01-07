@@ -3,7 +3,6 @@
 }
 
 h2 {
-	text-align: center;
 	margin: 1rem 0 1rem 0;
 }
 
@@ -16,7 +15,11 @@ h2 {
 }
 
 #post-btn {
-	display: block;
 	margin-top: 15px;
 	width: 225px;
+}
+
+.Canvas-container {
+	display: flex;
+	justify-content: center;
 }
