@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Switch, Route, NavLink } from 'react-router-dom';
 import NewDrawing from './NewDrawing';
 import Drawings from './Drawings';
+import ErrorHandler from './ErrorHandler';
 
 class OpenCanvas extends Component {
 	render () {
@@ -26,6 +27,12 @@ class OpenCanvas extends Component {
 				<Switch>
 					<Route exact path="/drawings/new" component={NewDrawing} />
 					<Route exact path="/drawings" component={Drawings} />
+					<Route exact path="/" component={Drawings} />
+					<Route
+						exact
+						path="*"
+						render={() => <ErrorHandler status={404} message="Not Found" />}
+					/>
 				</Switch>
 			</div>
 		);
